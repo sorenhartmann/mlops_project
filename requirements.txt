@@ -12,6 +12,7 @@ torch
 pandas
 transformers
 argparse
+matplotlib
 
 
 # local package

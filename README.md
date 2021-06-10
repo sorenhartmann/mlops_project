@@ -7,7 +7,7 @@ The overall goal of this project is to use transformers for predicting whether a
 
 The framework we will be using is [Transformers](https://github.com/huggingface/transformers). from the Pytorch Ecosystem. A pre-trained model provided by the repository will be used to perform NLP tasks such as feature extraction and prediction. 
 
-Data is from the competition "Natural Language Processing with Disaster Tweets" found on [Kaggle](kaggle.com).It consists of the text from a tweet, a keyword from that tweet and the location where that tweet was sent from. 
+Data is from the competition "Natural Language Processing with Disaster Tweets" found on [Kaggle](kaggle.com). It consists of the text from a tweet, a keyword from that tweet and the location where that tweet was sent from. 
 
 
 If time we will submit our contribution to the Kaggle competition. 

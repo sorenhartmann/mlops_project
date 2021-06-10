@@ -3,15 +3,25 @@ import click
 import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
+# @click.command()
+# @click.argument('input_filepath', type=click.Path(exists=True))
+# @click.argument('output_filepath', type=click.Path())
+def main():  #input_filepath, output_filepath
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
+    api = KaggleApi()
+    api.authenticate()
+    api.competition_download_file('nlp-getting-started',
+                                  file_name='train.csv',
+                                  path='data/raw/')
+    api.competition_download_file('nlp-getting-started',
+                                  file_name='test.csv',
+                                  path='data/raw/')
+
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
 

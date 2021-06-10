@@ -9,6 +9,10 @@ python-dotenv>=0.5.1
 kaggle
 wandb
 torch
+pandas
+transformers
+argparse
+
 
 # local package
 -e .

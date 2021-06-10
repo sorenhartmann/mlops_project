@@ -6,6 +6,7 @@ from dotenv import find_dotenv, load_dotenv
 from kaggle.api.kaggle_api_extended import KaggleApi
 import pandas as pd
 from src.data.data_cleaning import clean
+import os
 
 
 # @click.command()
@@ -40,6 +41,10 @@ def main():  #input_filepath, output_filepath
     #Clean text using data_cleaning.py
     train['text_cleaned'] = train['text'].apply(lambda s: clean(s))
     test['text_cleaned'] = test['text'].apply(lambda s: clean(s))
+
+    #Create data/preprocessed folder if it does not exists
+    if not os.path.exists('data/preprocessed'):
+    	os.makedirs('data/preprocessed')
 
     #Dump new processed data:
     train.to_csv('data/preprocessed/train.csv')

@@ -7,6 +7,9 @@ import pandas as pd
 import sys
 import argparse
 import matplotlib.pyplot as plt
+from src.data.datamodule import DisasterDataModule
+
+device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 parser = argparse.ArgumentParser(description='Training arguments')
 parser.add_argument('--lr', default=0.003)
@@ -82,16 +85,14 @@ def val_func(valloader, model):
 
 
 def train():
-    
-    #Import dataset and create dataloaders
-    trainset = pd.read_csv('data/preprocessed/train.csv')
-    testset = pd.read_csv('data/preprocessed/test.csv')
-    #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    device = torch.device('cpu')
-    print("device: ", device)
-    trainloader, valloader = build_train_val_loader(trainset, args.batch_size,
-                                                    device, args.val_size)
-    testloader = build_test_loader(testset, args.batch_size, device)
+
+    dm = DisasterDataModule("./data", batch_size=16)
+    dm.prepare_data()
+
+    dm.setup()
+
+    trainloader = dm.train_dataloader()
+    valloader = dm.val_dataloader()
 
     #Import model:
     model = ConvBertForSequenceClassification.from_pretrained(

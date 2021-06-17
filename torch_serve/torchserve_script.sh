@@ -1,0 +1,1 @@
+torch-model-archiver --model-name convbert_model --version 1.0 --serialized-file torch_serve/convbert_model.pt --export-path model_store --extra-files torch_serve/index_to_name.json --handler text_classifier

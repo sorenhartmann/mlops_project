@@ -15,6 +15,7 @@ pandas
 transformers
 argparse
 matplotlib
+optuna
 
 
 # local package

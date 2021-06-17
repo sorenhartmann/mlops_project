@@ -15,7 +15,7 @@ class DisasterDataModule(LightningDataModule):
     train_file = "train.pt"
     test_file = "test.pt"
 
-    def __init__(self, root: str, batch_size=32, val_frac=0.7):
+    def __init__(self, root: str, batch_size=32, val_frac=0.2):
 
         super().__init__()
         self.root = Path(root)

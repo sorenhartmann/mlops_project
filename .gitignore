@@ -94,3 +94,4 @@ target/
 /wandb
 /checkpoints
 /optuna-storage.db
+/logs/

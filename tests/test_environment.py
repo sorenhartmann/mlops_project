@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+import re
 
 REQUIRED_PYTHON = "python3"
 
@@ -22,7 +23,7 @@ def main():
         print(">>> Development environment passes all tests!")
 
 
-def data_test():
+def test_data():
     train_df = pd.read_csv('data/preprocessed/train.csv')
     test_df = pd.read_csv('data/preprocessed/test.csv')
 
@@ -32,7 +33,7 @@ def data_test():
     except AssertionError:
         print('Full data not loaded')
 
-def sub_test():
+def test_sub():
 
     test_str = "aren't isn't What's haven't hasn't There's He's It's You're"
 
@@ -58,5 +59,5 @@ def sub_test():
 
 if __name__ == '__main__':
     main()
-    data_test()
-    sub_test()
+    test_data()
+    test_sub()

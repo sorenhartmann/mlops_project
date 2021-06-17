@@ -1,5 +1,9 @@
 from transformers import ConvBertForSequenceClassification
-from src.data.build_loader import build_train_val_loader, build_test_loader, terminal_colors
+from src.data.build_loader import (
+    build_train_val_loader,
+    build_test_loader,
+    terminal_colors,
+)
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -8,16 +12,27 @@ import sys
 import argparse
 import matplotlib.pyplot as plt
 from src.data.datamodule import DisasterDataModule
+from tqdm import tqdm
+from src.utils import all_logging_disabled
+import logging
 
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
-parser = argparse.ArgumentParser(description='Training arguments')
-parser.add_argument('--lr', default=0.003)
-parser.add_argument('--epoch', default = 10)
-parser.add_argument('--batch_size', default=16)
-parser.add_argument('--val_size', default=0.2)
-parser.add_argument('--model_version', default = 0)
+parser = argparse.ArgumentParser(description="Training arguments")
+parser.add_argument("--lr", default=0.003)
+parser.add_argument("--epoch", default=10)
+parser.add_argument("--batch_size", default=16)
+parser.add_argument("--val_size", default=0.2)
+parser.add_argument("--model_version", default=0)
 args = parser.parse_args(sys.argv[2:])
+
+
+params_to_train = [
+    "classifier.dense.weight",
+    "classifier.out_proj.bias",
+    "classifier.out_proj.weight",
+    "classifier.dense.bias",
+]
 
 def train_func(trainloader, model, optimizer):
 
@@ -26,52 +41,52 @@ def train_func(trainloader, model, optimizer):
     running_loss = 0
     acc = 0
 
-    for batch_idx, (batch) in enumerate(trainloader):
+    for batch_idx, (batch) in tqdm(enumerate(trainloader)):
 
         batch = {
-                'input_ids': batch[0],
-                'token_type_ids': batch[1],
-                'attention_mask': batch[2],
-                'labels': batch[3].unsqueeze(1)
-            }
-        
+            "input_ids": batch[0],
+            "token_type_ids": batch[1],
+            "attention_mask": batch[2],
+            "labels": batch[3].unsqueeze(1),
+        }
+
         optimizer.zero_grad()
-        
+
         output = model.forward(**batch)
-        #Cross entropy loss
+
+        # Cross entropy loss
         loss = output.loss
         loss.backward()
         optimizer.step()
-        
-        running_loss += loss.item()
-        acc += torch.sum(batch["labels"] == (output.logits.squeeze() >= 0.5))
 
-        break   
+        running_loss += loss.item()
+        acc += torch.sum(batch["labels"] == (output.logits.argmax(-1) >= 0.5))
 
     acc = acc / len(trainloader)
 
     return running_loss, acc
+
 
 def val_func(valloader, model):
 
     model.eval()
 
     running_loss = 0
-    acc = 0 
+    acc = 0
 
     with torch.no_grad():
 
         for batch_idx, (batch) in enumerate(valloader):
 
             batch = {
-                    'input_ids': batch[0],
-                    'token_type_ids': batch[1],
-                    'attention_mask': batch[2],
-                    'labels': batch[3].unsqueeze(1)
-                }
+                "input_ids": batch[0],
+                "token_type_ids": batch[1],
+                "attention_mask": batch[2],
+                "labels": batch[3].unsqueeze(1),
+            }
 
             output = model.forward(**batch)
-            #Cross entropy loss
+            # Cross entropy loss
             loss = output.loss
 
             running_loss += loss.item()
@@ -94,14 +109,15 @@ def train():
     trainloader = dm.train_dataloader()
     valloader = dm.val_dataloader()
 
-    #Import model:
-    model = ConvBertForSequenceClassification.from_pretrained(
-        'YituTech/conv-bert-base').to(device)
+    # Import model:
+    with all_logging_disabled(logging.ERROR):
+        model = ConvBertForSequenceClassification.from_pretrained(
+            "YituTech/conv-bert-base"
+        )
 
-    #EVT: Tjek om den træner hele netværket eller kun det nye classifier layer. 
-
+    # EVT: Tjek om den træner hele netværket eller kun det nye classifier layer.
     optimizer = Adam(model.parameters(), lr=args.lr)
-    
+
     steps = 0
     epoch = int(args.epoch)
     train_loss_lst, train_acc_lst, val_loss_lst, val_acc_lst = [], [], [], []
@@ -117,35 +133,54 @@ def train():
         val_acc_lst.append(acc)
 
         to_print = [
-          f"{terminal_colors.HEADER}EPOCH %03d"          % e,
-          f"{terminal_colors.OKBLUE}TRAIN LOSS=%4.4f"            % train_loss_lst[-1], 
-          f"{terminal_colors.OKGREEN}TRAIN ACC=%4.4f"           % train_acc_lst[-1], 
-          f"{terminal_colors.OKCYAN}VAL LOSS=%4.4f"            % val_loss_lst[-1], 
-          f"{terminal_colors.WARNING}VAL ACC=%4.4f"           % val_acc_lst[-1], 
+            f"{terminal_colors.HEADER}EPOCH %03d" % e,
+            f"{terminal_colors.OKBLUE}TRAIN LOSS=%4.4f" % train_loss_lst[-1],
+            f"{terminal_colors.OKGREEN}TRAIN ACC=%4.4f" % train_acc_lst[-1],
+            f"{terminal_colors.OKCYAN}VAL LOSS=%4.4f" % val_loss_lst[-1],
+            f"{terminal_colors.WARNING}VAL ACC=%4.4f" % val_acc_lst[-1],
         ]
         print(" ".join(to_print))
 
         break
 
-        
-    #torch.save(model.state_dict(), 'models/' + str(args.model_version) + '_checkpoint.pth')
+    # torch.save(model.state_dict(), 'models/' + str(args.model_version) + '_checkpoint.pth')
 
-    plt.figure(figsize = (8,12))
-    plt.plot(range(1,len(train_loss_lst)+1), train_loss_lst, label = 'train loss', color = 'blue')
-    plt.plot(range(1,len(val_loss_lst)+1), val_loss_lst, label = 'validation loss', color = 'red')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.title('Training loss - Disaster tweets convBERT model')
-    plt.savefig('reports/figures/train_loss.png')
+    plt.figure(figsize=(8, 12))
+    plt.plot(
+        range(1, len(train_loss_lst) + 1),
+        train_loss_lst,
+        label="train loss",
+        color="blue",
+    )
+    plt.plot(
+        range(1, len(val_loss_lst) + 1),
+        val_loss_lst,
+        label="validation loss",
+        color="red",
+    )
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Training loss - Disaster tweets convBERT model")
+    plt.savefig("reports/figures/train_loss.png")
 
-    plt.figure(figsize = (8,12))
-    plt.plot(range(1,len(train_acc_lst)+1), train_acc_lst, label = 'train accuracy', color = 'blue')
-    plt.plot(range(1,len(val_acc_lst)+1), val_acc_lst, label = 'validation accuracy', color = 'red')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.title('Training accuracy - Disaster tweets convBERT model')
-    plt.savefig('reports/figures/train_acc.png')
+    plt.figure(figsize=(8, 12))
+    plt.plot(
+        range(1, len(train_acc_lst) + 1),
+        train_acc_lst,
+        label="train accuracy",
+        color="blue",
+    )
+    plt.plot(
+        range(1, len(val_acc_lst) + 1),
+        val_acc_lst,
+        label="validation accuracy",
+        color="red",
+    )
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.title("Training accuracy - Disaster tweets convBERT model")
+    plt.savefig("reports/figures/train_acc.png")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     train()

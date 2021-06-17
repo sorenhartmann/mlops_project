@@ -159,9 +159,9 @@ class DisasterDataModule(LightningDataModule):
 
 if __name__ == "__main__":
 
-    dm = DisasterDataModule("./data", batch_size=16)
-    dm.prepare_data()
+    dm = DisasterDataModule("./data", batch_size=32)
 
+    dm.prepare_data()
     dm.setup()
 
     for batch in tqdm(dm.train_dataloader()):

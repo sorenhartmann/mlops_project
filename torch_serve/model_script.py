@@ -17,7 +17,7 @@ args = parser.parse_args(sys.argv[1:2])
 
 # script_model = torch.jit.script(model)
 # script_model.save('torch_serve/' + str(args.model_name) + '.pt')
-
+os.makedirs('model_store/', exist_ok=True)
 if args.serialize_model:
     ss = 'torch-model-archiver --model-name ' + str(
         args.model_name) + ' --version ' + str(

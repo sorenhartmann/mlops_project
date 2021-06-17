@@ -16,7 +16,8 @@ transformers
 argparse
 matplotlib
 optuna
-
+torchserve 
+torch-model-archiver
 
 # local package
 -e .

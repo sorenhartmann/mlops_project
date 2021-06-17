@@ -5,6 +5,7 @@ coverage
 isort
 flake8
 python-dotenv>=0.5.1
+pytest
 
 kaggle
 wandb
@@ -14,6 +15,7 @@ pandas
 transformers
 argparse
 matplotlib
+
 
 # local package
 -e .

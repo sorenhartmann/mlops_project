@@ -7,6 +7,7 @@ import argparse
 from src.utils import all_logging_disabled
 import logging
 import functools
+import torchmetrics
 
 class ConvBert(pl.LightningModule):
 
@@ -28,6 +29,8 @@ class ConvBert(pl.LightningModule):
             model = ConvBertForSequenceClassification.from_pretrained('YituTech/conv-bert-base')
         self.model = model
 
+        self.accuracy = torchmetrics.Accuracy()
+
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
 
@@ -45,6 +48,9 @@ class ConvBert(pl.LightningModule):
                 attention_mask=batch['attention_mask'],
                 labels=batch['labels']
                 )
+
+        self.log("train_loss", output.loss)
+
         return output.loss
 
 
@@ -62,6 +68,9 @@ class ConvBert(pl.LightningModule):
                 attention_mask=batch['attention_mask'],
                 labels=batch['labels']
                 )
+
+        predictions = output.logits.argmax(-1)
+        self.log("val_accuracy", self.accuracy(predictions, batch["labels"].squeeze()), prog_bar=True)
         self.log('val_loss', output.loss)
 
 

@@ -16,7 +16,7 @@ def main(args):
 
     wandb_logger = WandbLogger(project="mlops_project", entity="mlops_project")
     
-    dm = DisasterDataModule("./data", batch_size=16)
+    dm = DisasterDataModule(**vars(args))
 
     model = ConvBert(**vars(args))
     trainer = pl.Trainer.from_argparse_args(
@@ -31,6 +31,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
 
     parser = ConvBert.add_model_specific_args(parser)
+    parser = DisasterDataModule.add_data_specific_args(parser)
     parser = pl.Trainer.add_argparse_args(parser)
 
     args = parser.parse_args()

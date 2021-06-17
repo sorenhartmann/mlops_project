@@ -15,10 +15,18 @@ class DisasterDataModule(LightningDataModule):
     train_file = "train.pt"
     test_file = "test.pt"
 
-    def __init__(self, root: str, batch_size=32, val_frac=0.2):
+    @staticmethod
+    def add_data_specific_args(parent_parser):
+        parser = parent_parser.add_argument_group("DisasterDataModule")
+        parser.add_argument('--data_dir', default='./data')
+        parser.add_argument('--batch_size', default=32, type=int)
+        parser.add_argument('--val_frac', default=0.2, type=float)
+        return parent_parser
+
+    def __init__(self, data_dir: str, batch_size=32, val_frac=0.2, **kwargs):
 
         super().__init__()
-        self.root = Path(root)
+        self.root = Path(data_dir)
 
         self.batch_size = batch_size
         self.val_frac = val_frac
@@ -30,6 +38,7 @@ class DisasterDataModule(LightningDataModule):
         self.tokenize()
 
     def setup(self, stage: str = None):
+        print(self.batch_size)
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:

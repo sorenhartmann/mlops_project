@@ -93,3 +93,4 @@ target/
 /models
 /wandb
 /checkpoints
+/optuna-storage.db

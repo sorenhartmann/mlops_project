@@ -38,7 +38,6 @@ class DisasterDataModule(LightningDataModule):
         self.tokenize()
 
     def setup(self, stage: str = None):
-        print(self.batch_size)
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:

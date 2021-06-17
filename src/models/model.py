@@ -15,19 +15,41 @@ class ConvBert(pl.LightningModule):
     def add_model_specific_args(parent_parser):
         parser = parent_parser.add_argument_group("ConvBert")
         parser.add_argument('--lr', default=0.001)
+        parser.add_argument('--fine_tune_layers', default=1, type=int)
         return parent_parser
 
-    def __init__(self, lr, **kwargs):
+    def __init__(self, lr, fine_tune_layers, **kwargs):
 
         super().__init__()
 
-        self.save_hyperparameters("lr")
+        self.save_hyperparameters("lr", "fine_tune_layers")
 
         self.lr = lr
+        self.fine_tune_layers = fine_tune_layers
 
         with all_logging_disabled(logging.ERROR):
             model = ConvBertForSequenceClassification.from_pretrained('YituTech/conv-bert-base')
         self.model = model
+
+        for param in self.model._modules['convbert'].embeddings.parameters():
+            param.requires_grad = False
+
+        if fine_tune_layers == 0:
+            layer_slice = slice(None)
+        else:
+            layer_slice = slice(None, -fine_tune_layers)
+
+        params_to_freeze = (
+            self
+            .model
+            ._modules['convbert']
+            .encoder
+            .layer[layer_slice]
+            .parameters()
+        )
+        for param in params_to_freeze:
+            param.requires_grad = False
+
 
         self.accuracy = torchmetrics.Accuracy()
 
@@ -75,20 +97,8 @@ class ConvBert(pl.LightningModule):
 
 
     def configure_optimizers(self):
-        param_optimizer = list(self.model.named_parameters())
-        no_decay = ["bias", "gamma", "beta"]
-        optimizer_grouped_parameters = [
-                {
-                    "params": [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
-                    "weight_decay_rate": 0.01
-                    },
-                {
-                    "params": [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
-                    "weight_decay_rate": 0.0
-                    },
-                ]
         optimizer = AdamW(
-                optimizer_grouped_parameters,
+                self.model.parameters(),
                 lr=self.lr,
                 )
 

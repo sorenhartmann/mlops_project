@@ -16,14 +16,16 @@ class Objective():
         
         wandb_logger = WandbLogger(project="mlops_project", entity="mlops_project", tags=["hparam-search"], group='hparam-search')
 
+
         lr = trial.suggest_float("lr", 1e-5, 1e-3, log=True)
         batch_size = trial.suggest_categorical("batch_size", [16, 32, 64])
         fine_tune_layers = trial.suggest_int("fine_tune_layers", 0, 5)
 
+
+        wandb_logger.log_hyperparams({"batch_size" : batch_size})
         dm = DisasterDataModule(batch_size=batch_size, data_dir='./data')
         model = ConvBert(lr=lr, fine_tune_layers=fine_tune_layers)
-        
-        
+
         trainer = pl.Trainer.from_argparse_args(
             self.args,
             logger=wandb_logger,
@@ -32,6 +34,7 @@ class Objective():
         trainer.fit(model, dm)
 
         wandb.finish()
+        
         return trainer.callback_metrics['val_accuracy'].item()
 
 

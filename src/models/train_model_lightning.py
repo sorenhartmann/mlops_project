@@ -9,11 +9,12 @@ from argparse import ArgumentParser
 from pytorch_lightning.loggers import WandbLogger
 from src.data.datamodule import DisasterDataModule
 from src.models.model import ConvBert
-
+import wandb
 def main(args):
 
-    # wandb_logger = WandbLogger(project="ConvBert")
-    wandb_logger = None
+    wandb_api = wandb.Api()
+
+    wandb_logger = WandbLogger(project="mlops_project", entity="mlops_project")
     
     dm = DisasterDataModule("./data", batch_size=16)
 
@@ -21,7 +22,6 @@ def main(args):
     trainer = pl.Trainer.from_argparse_args(
         args,
         logger=wandb_logger,
-        progress_bar_refresh_rate=0,
     )
 
     trainer.fit(model, dm)

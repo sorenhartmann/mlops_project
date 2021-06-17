@@ -14,11 +14,6 @@ def main(args):
 
     wandb_logger = WandbLogger(project="ConvBert")
     dm = DisasterDataModule("./data", batch_size=16)
-    dm.prepare_data()
-    dm.setup()
-
-    trainloader = dm.train_dataloader()
-    valloader = dm.val_dataloader()
 
     model = ConvBert(**vars(args))
     trainer = pl.Trainer.from_argparse_args(
@@ -27,7 +22,7 @@ def main(args):
         progress_bar_refresh_rate=0,
     )
 
-    trainer.fit(model, trainloader)
+    trainer.fit(model, dm)
 
 if __name__ == "__main__":
 

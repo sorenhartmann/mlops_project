@@ -23,15 +23,15 @@ def main():
         print(">>> Development environment passes all tests!")
 
 
-def test_data():
-    train_df = pd.read_csv('data/preprocessed/train.csv')
-    test_df = pd.read_csv('data/preprocessed/test.csv')
+# def test_data():
+#     train_df = pd.read_csv('data/preprocessed/train.csv')
+#     test_df = pd.read_csv('data/preprocessed/test.csv')
 
-    try:
-        assert len(train_df) == 7613
-        assert len(test_df) == 3263
-    except AssertionError:
-        print('Full data not loaded')
+#     try:
+#         assert len(train_df) == 7613
+#         assert len(test_df) == 3263
+#     except AssertionError:
+#         print('Full data not loaded')
 
 def test_sub():
 
@@ -59,5 +59,5 @@ def test_sub():
 
 if __name__ == '__main__':
     main()
-    test_data()
+#    test_data()
     test_sub()

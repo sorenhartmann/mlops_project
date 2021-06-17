@@ -141,7 +141,7 @@ def train():
         ]
         print(" ".join(to_print))
 
-        break
+        #break
 
     # torch.save(model.state_dict(), 'models/' + str(args.model_version) + '_checkpoint.pth')
 

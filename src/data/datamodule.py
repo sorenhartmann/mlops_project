@@ -65,10 +65,14 @@ class DisasterDataModule(LightningDataModule):
         return self.root / "processed"
 
     def train_dataloader(self):
-        return DataLoader(self.train_dataset, shuffle=True, batch_size=self.batch_size)
+        return DataLoader(
+            self.train_dataset, shuffle=True, batch_size=self.batch_size, num_workers=4
+        )
 
     def val_dataloader(self):
-        return DataLoader(self.val_dataset, shuffle=True, batch_size=self.batch_size)
+        return DataLoader(
+            self.val_dataset, batch_size=self.batch_size, num_workers=4
+        )
 
     def test_dataloader(self):
         return DataLoader(self.test_dataset, batch_size=self.batch_size)

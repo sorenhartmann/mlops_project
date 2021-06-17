@@ -12,7 +12,9 @@ from src.models.model import ConvBert
 
 def main(args):
 
-    wandb_logger = WandbLogger(project="ConvBert")
+    # wandb_logger = WandbLogger(project="ConvBert")
+    wandb_logger = None
+    
     dm = DisasterDataModule("./data", batch_size=16)
 
     model = ConvBert(**vars(args))

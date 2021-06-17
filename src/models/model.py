@@ -4,7 +4,9 @@ import torch.nn as nn
 from torch.optim import Adam
 import pytorch_lightning as pl
 import argparse
-
+from src.utils import all_logging_disabled
+import logging
+import functools
 
 class ConvBert(pl.LightningModule):
 
@@ -15,16 +17,20 @@ class ConvBert(pl.LightningModule):
         return parent_parser
 
     def __init__(self, lr, **kwargs):
+
         super().__init__()
 
         self.save_hyperparameters("lr")
 
         self.lr = lr
 
-        model = ConvBertForSequenceClassification.from_pretrained('YituTech/conv-bert-base')
+        with all_logging_disabled(logging.ERROR):
+            model = ConvBertForSequenceClassification.from_pretrained('YituTech/conv-bert-base')
         self.model = model
 
-    
+    def forward(self, *args, **kwargs):
+        return self.model(*args, **kwargs)
+
     def training_step(self, batch, batch_idx):
         batch = {
                 'input_ids': batch[0],
@@ -33,13 +39,13 @@ class ConvBert(pl.LightningModule):
                 'labels': batch[3].unsqueeze(1)
             }
 
-        loss, _ = self.model(
+        output = self(
                 input_ids=batch['input_ids'],
                 token_type_ids=batch['token_type_ids'],
                 attention_mask=batch['attention_mask'],
                 labels=batch['labels']
                 )
-        return loss
+        return output.loss
 
 
     def validation_step(self, batch, batch_idx):
@@ -50,13 +56,13 @@ class ConvBert(pl.LightningModule):
                 'labels': batch[3].unsqueeze(1)
             }
 
-        val_loss, _ = self.model(
+        output = self(
                 input_ids=batch['input_ids'],
                 token_type_ids=batch['token_type_ids'],
                 attention_mask=batch['attention_mask'],
                 labels=batch['labels']
                 )
-        self.log('val_loss', val_loss)
+        self.log('val_loss', output.loss)
 
 
     def configure_optimizers(self):
@@ -76,5 +82,5 @@ class ConvBert(pl.LightningModule):
                 optimizer_grouped_parameters,
                 lr=self.lr,
                 )
-        return optimizer
 
+        return optimizer

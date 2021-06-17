@@ -92,3 +92,4 @@ target/
 .venv
 /models
 /wandb
+/checkpoints

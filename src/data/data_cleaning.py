@@ -216,8 +216,11 @@ def clean(tweet):
     tweet = re.sub(r"djicemoon", "dj icemoon", tweet)
     tweet = re.sub(r"LivingSafely", "Living Safely", tweet)
     tweet = re.sub(r"FIFA16", "Fifa 2016", tweet)
-    tweet = re.sub(r"thisiswhywecanthavenicethings",
-                   "this is why we cannot have nice things", tweet)
+    tweet = re.sub(
+        r"thisiswhywecanthavenicethings",
+        "this is why we cannot have nice things",
+        tweet,
+    )
     tweet = re.sub(r"bbcnews", "bbc news", tweet)
     tweet = re.sub(r"UndergroundRailraod", "Underground Railraod", tweet)
     tweet = re.sub(r"c4news", "c4 news", tweet)
@@ -239,8 +242,11 @@ def clean(tweet):
     tweet = re.sub(r"megynkelly", "Megyn Kelly", tweet)
     tweet = re.sub(r"cnewslive", "C News Live", tweet)
     tweet = re.sub(r"JamaicaObserver", "Jamaica Observer", tweet)
-    tweet = re.sub(r"TweetLikeItsSeptember11th2001",
-                   "Tweet like it is september 11th 2001", tweet)
+    tweet = re.sub(
+        r"TweetLikeItsSeptember11th2001",
+        "Tweet like it is september 11th 2001",
+        tweet,
+    )
     tweet = re.sub(r"cbplawyers", "cbp lawyers", tweet)
     tweet = re.sub(r"fewmoretweets", "few more tweets", tweet)
     tweet = re.sub(r"BlackLivesMatter", "Black Lives Matter", tweet)
@@ -265,8 +271,9 @@ def clean(tweet):
     tweet = re.sub(r"auspol", "Australian politics", tweet)
     tweet = re.sub(r"PlannedParenthood", "Planned Parenthood", tweet)
     tweet = re.sub(r"calgaryweather", "Calgary Weather", tweet)
-    tweet = re.sub(r"weallheartonedirection", "we all heart one direction",
-                   tweet)
+    tweet = re.sub(
+        r"weallheartonedirection", "we all heart one direction", tweet
+    )
     tweet = re.sub(r"edsheeran", "Ed Sheeran", tweet)
     tweet = re.sub(r"TrueHeroes", "True Heroes", tweet)
     tweet = re.sub(r"S3XLEAK", "sex leak", tweet)
@@ -278,8 +285,9 @@ def clean(tweet):
     tweet = re.sub(r"RAmag", "Royal Academy Magazine", tweet)
     tweet = re.sub(r"offers2go", "offers to go", tweet)
     tweet = re.sub(r"foodscare", "food scare", tweet)
-    tweet = re.sub(r"MNPDNashville",
-                   "Metropolitan Nashville Police Department", tweet)
+    tweet = re.sub(
+        r"MNPDNashville", "Metropolitan Nashville Police Department", tweet
+    )
     tweet = re.sub(r"TfLBusAlerts", "TfL Bus Alerts", tweet)
     tweet = re.sub(r"GamerGate", "Gamer Gate", tweet)
     tweet = re.sub(r"IHHen", "Humanitarian Relief", tweet)
@@ -307,8 +315,11 @@ def clean(tweet):
     tweet = re.sub(r"alexbelloli", "Alex Belloli", tweet)
     tweet = re.sub(r"itsjustinstuart", "Justin Stuart", tweet)
     tweet = re.sub(r"gunsense", "gun sense", tweet)
-    tweet = re.sub(r"DebateQuestionsWeWantToHear",
-                   "debate questions we want to hear", tweet)
+    tweet = re.sub(
+        r"DebateQuestionsWeWantToHear",
+        "debate questions we want to hear",
+        tweet,
+    )
     tweet = re.sub(r"RoyalCarribean", "Royal Carribean", tweet)
     tweet = re.sub(r"samanthaturne19", "Samantha Turner", tweet)
     tweet = re.sub(r"JonVoyage", "Jon Stewart", tweet)
@@ -367,8 +378,9 @@ def clean(tweet):
     tweet = re.sub(r"Daesh", "ISIS", tweet)
     tweet = re.sub(r"s2g", "swear to god", tweet)
     tweet = re.sub(r"listenlive", "listen live", tweet)
-    tweet = re.sub(r"CDCgov", "Centers for Disease Control and Prevention",
-                   tweet)
+    tweet = re.sub(
+        r"CDCgov", "Centers for Disease Control and Prevention", tweet
+    )
     tweet = re.sub(r"FoxNew", "Fox News", tweet)
     tweet = re.sub(r"CBSBigBrother", "Big Brother", tweet)
     tweet = re.sub(r"JulieDiCaro", "Julie DiCaro", tweet)
@@ -380,10 +392,12 @@ def clean(tweet):
     tweet = re.sub(r"FantasticFour", "Fantastic Four", tweet)
     tweet = re.sub(r"HORNDALE", "Horndale", tweet)
     tweet = re.sub(r"PINER", "Piner", tweet)
-    tweet = re.sub(r"BathAndNorthEastSomerset", "Bath and North East Somerset",
-                   tweet)
-    tweet = re.sub(r"thatswhatfriendsarefor", "that is what friends are for",
-                   tweet)
+    tweet = re.sub(
+        r"BathAndNorthEastSomerset", "Bath and North East Somerset", tweet
+    )
+    tweet = re.sub(
+        r"thatswhatfriendsarefor", "that is what friends are for", tweet
+    )
     tweet = re.sub(r"residualincome", "residual income", tweet)
     tweet = re.sub(r"YahooNewsDigest", "Yahoo News Digest", tweet)
     tweet = re.sub(r"MalaysiaAirlines", "Malaysia Airlines", tweet)
@@ -421,8 +435,9 @@ def clean(tweet):
     tweet = re.sub(r"thehill", "the hill", tweet)
     tweet = re.sub(r"3others", "3 others", tweet)
     tweet = re.sub(r"stighefootball", "Sam Tighe", tweet)
-    tweet = re.sub(r"whatstheimportantvideo", "what is the important video",
-                   tweet)
+    tweet = re.sub(
+        r"whatstheimportantvideo", "what is the important video", tweet
+    )
     tweet = re.sub(r"ClaudioMeloni", "Claudio Meloni", tweet)
     tweet = re.sub(r"DukeSkywalker", "Duke Skywalker", tweet)
     tweet = re.sub(r"carsonmwr", "Fort Carson", tweet)
@@ -462,8 +477,9 @@ def clean(tweet):
     tweet = re.sub(r"ShallWeDance", "Shall We Dance", tweet)
     tweet = re.sub(r"TCMParty", "TCM Party", tweet)
     tweet = re.sub(r"marijuananews", "marijuana news", tweet)
-    tweet = re.sub(r"onbeingwithKristaTippett", "on being with Krista Tippett",
-                   tweet)
+    tweet = re.sub(
+        r"onbeingwithKristaTippett", "on being with Krista Tippett", tweet
+    )
     tweet = re.sub(r"Beingtweets", "Being tweets", tweet)
     tweet = re.sub(r"newauthors", "new authors", tweet)
     tweet = re.sub(r"remedyyyy", "remedy", tweet)
@@ -472,8 +488,11 @@ def clean(tweet):
     tweet = re.sub(r"40PM", "40 PM", tweet)
     tweet = re.sub(r"myswc", "Severe Weather Center", tweet)
     tweet = re.sub(r"ithats", "that is", tweet)
-    tweet = re.sub(r"icouldsitinthismomentforever",
-                   "I could sit in this moment forever", tweet)
+    tweet = re.sub(
+        r"icouldsitinthismomentforever",
+        "I could sit in this moment forever",
+        tweet,
+    )
     tweet = re.sub(r"FatLoss", "Fat Loss", tweet)
     tweet = re.sub(r"02PM", "02 PM", tweet)
     tweet = re.sub(r"MetroFmTalk", "Metro Fm Talk", tweet)
@@ -551,8 +570,9 @@ def clean(tweet):
     tweet = re.sub(r"JimmyFallon", "Jimmy Fallon", tweet)
     tweet = re.sub(r"AlbertBrooks", "Albert Brooks", tweet)
     tweet = re.sub(r"defense_news", "defense news", tweet)
-    tweet = re.sub(r"nuclearrcSA", "Nuclear Risk Control Self Assessment",
-                   tweet)
+    tweet = re.sub(
+        r"nuclearrcSA", "Nuclear Risk Control Self Assessment", tweet
+    )
     tweet = re.sub(r"Auspol", "Australia Politics", tweet)
     tweet = re.sub(r"NuclearPower", "Nuclear Power", tweet)
     tweet = re.sub(r"WhiteTerrorism", "White Terrorism", tweet)
@@ -574,16 +594,20 @@ def clean(tweet):
     tweet = re.sub(r"irongiant", "iron giant", tweet)
     tweet = re.sub(r"RonFunches", "Ron Funches", tweet)
     tweet = re.sub(r"TimCook", "Tim Cook", tweet)
-    tweet = re.sub(r"sebastianstanisaliveandwell",
-                   "Sebastian Stan is alive and well", tweet)
+    tweet = re.sub(
+        r"sebastianstanisaliveandwell",
+        "Sebastian Stan is alive and well",
+        tweet,
+    )
     tweet = re.sub(r"Madsummer", "Mad summer", tweet)
     tweet = re.sub(r"NowYouKnow", "Now you know", tweet)
     tweet = re.sub(r"concertphotography", "concert photography", tweet)
     tweet = re.sub(r"TomLandry", "Tom Landry", tweet)
     tweet = re.sub(r"showgirldayoff", "show girl day off", tweet)
     tweet = re.sub(r"Yougslavia", "Yugoslavia", tweet)
-    tweet = re.sub(r"QuantumDataInformatics", "Quantum Data Informatics",
-                   tweet)
+    tweet = re.sub(
+        r"QuantumDataInformatics", "Quantum Data Informatics", tweet
+    )
     tweet = re.sub(r"FromTheDesk", "From The Desk", tweet)
     tweet = re.sub(r"TheaterTrial", "Theater Trial", tweet)
     tweet = re.sub(r"CatoInstitute", "Cato Institute", tweet)
@@ -599,8 +623,9 @@ def clean(tweet):
     tweet = re.sub(r"jokethey", "joke they", tweet)
     tweet = re.sub(r"nflweek1picks", "NFL week 1 picks", tweet)
     tweet = re.sub(r"uiseful", "useful", tweet)
-    tweet = re.sub(r"JusticeDotOrg", "The American Association for Justice",
-                   tweet)
+    tweet = re.sub(
+        r"JusticeDotOrg", "The American Association for Justice", tweet
+    )
     tweet = re.sub(r"autoaccidents", "auto accidents", tweet)
     tweet = re.sub(r"SteveGursten", "Steve Gursten", tweet)
     tweet = re.sub(r"MichiganAutoLaw", "Michigan Auto Law", tweet)
@@ -720,8 +745,9 @@ def clean(tweet):
     tweet = re.sub(r"StephGHinojosa", "Steph Hinojosa", tweet)
     tweet = re.sub(r"Nashgrier", "Nash Grier", tweet)
     tweet = re.sub(r"NashNewVideo", "Nash new video", tweet)
-    tweet = re.sub(r"IWouldntGetElectedBecause",
-                   "I would not get elected because", tweet)
+    tweet = re.sub(
+        r"IWouldntGetElectedBecause", "I would not get elected because", tweet
+    )
     tweet = re.sub(r"SHGames", "Sledgehammer Games", tweet)
     tweet = re.sub(r"bedhair", "bed hair", tweet)
     tweet = re.sub(r"JoelHeyman", "Joel Heyman", tweet)
@@ -731,14 +757,14 @@ def clean(tweet):
     tweet = re.sub(r"https?:\/\/t.co\/[A-Za-z0-9]+", "", tweet)
 
     # Words with punctuations and special characters
-    punctuations = '@#!?+&*[]-%.:/();$=><|{}^' + "'`"
+    punctuations = "@#!?+&*[]-%.:/();$=><|{}^" + "'`"
     for p in punctuations:
-        tweet = tweet.replace(p, f' {p} ')
+        tweet = tweet.replace(p, f" {p} ")
 
     # ... and ..
-    tweet = tweet.replace('...', ' ... ')
-    if '...' not in tweet:
-        tweet = tweet.replace('..', ' ... ')
+    tweet = tweet.replace("...", " ... ")
+    if "..." not in tweet:
+        tweet = tweet.replace("..", " ... ")
 
     # Acronyms
     tweet = re.sub(r"MH370", "Malaysia Airlines Flight 370", tweet)
@@ -752,8 +778,9 @@ def clean(tweet):
     tweet = re.sub(r"azwx", "Arizona Weather", tweet)
     tweet = re.sub(r"alwx", "Alabama Weather", tweet)
     tweet = re.sub(r"wordpressdotcom", "wordpress", tweet)
-    tweet = re.sub(r"usNWSgov", "United States National Weather Service",
-                   tweet)
+    tweet = re.sub(
+        r"usNWSgov", "United States National Weather Service", tweet
+    )
     tweet = re.sub(r"Suruc", "Sanliurfa", tweet)
 
     # Grouping same words without embeddings

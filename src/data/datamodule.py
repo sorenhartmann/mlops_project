@@ -5,7 +5,7 @@ import pandas as pd
 import torch
 from kaggle.api.kaggle_api_extended import KaggleApi
 from pytorch_lightning import LightningDataModule
-from torch.utils.data import DataLoader, Dataset, TensorDataset, random_split
+from torch.utils.data import DataLoader, TensorDataset, random_split
 from tqdm import tqdm
 from transformers import ConvBertTokenizer
 
@@ -18,9 +18,9 @@ class DisasterDataModule(LightningDataModule):
     @staticmethod
     def add_data_specific_args(parent_parser):
         parser = parent_parser.add_argument_group("DisasterDataModule")
-        parser.add_argument('--data_dir', default='./data')
-        parser.add_argument('--batch_size', default=32, type=int)
-        parser.add_argument('--val_frac', default=0.2, type=float)
+        parser.add_argument("--data_dir", default="./data")
+        parser.add_argument("--batch_size", default=32, type=int)
+        parser.add_argument("--val_frac", default=0.2, type=float)
         return parent_parser
 
     def __init__(self, data_dir: str, batch_size=32, val_frac=0.2, **kwargs):
@@ -74,7 +74,10 @@ class DisasterDataModule(LightningDataModule):
 
     def train_dataloader(self):
         return DataLoader(
-            self.train_dataset, shuffle=True, batch_size=self.batch_size, num_workers=4
+            self.train_dataset,
+            shuffle=True,
+            batch_size=self.batch_size,
+            num_workers=4,
         )
 
     def val_dataloader(self):
@@ -100,12 +103,16 @@ class DisasterDataModule(LightningDataModule):
                 "nlp-getting-started", file_name, path=self.raw_folder
             )
 
-        assert all((self.raw_folder / file_name).exists() for file_name in files)
+        assert all(
+            (self.raw_folder / file_name).exists() for file_name in files
+        )
 
     def clean_text(self):
 
         files = ["train_cleaned.csv", "test_cleaned.csv"]
-        if all((self.interim_folder / file_name).exists() for file_name in files):
+        if all(
+            (self.interim_folder / file_name).exists() for file_name in files
+        ):
             return
 
         train = pd.read_csv(self.raw_folder / "train.csv")
@@ -136,13 +143,17 @@ class DisasterDataModule(LightningDataModule):
 
         files = [self.train_file, self.test_file]
 
-        if all((self.processed_folder / file_name).exists() for file_name in files):
+        if all(
+            (self.processed_folder / file_name).exists() for file_name in files
+        ):
             return
 
         train = pd.read_csv(self.interim_folder / "train_cleaned.csv")
         test = pd.read_csv(self.interim_folder / "test_cleaned.csv")
 
-        tokenizer = ConvBertTokenizer.from_pretrained("YituTech/conv-bert-base")
+        tokenizer = ConvBertTokenizer.from_pretrained(
+            "YituTech/conv-bert-base"
+        )
 
         train_tokenized = tokenizer(
             train["text"].tolist(), padding="max_length", truncation=True
@@ -182,5 +193,3 @@ if __name__ == "__main__":
         pass
 
     dm.teardown()
-
-    pass

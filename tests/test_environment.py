@@ -1,6 +1,5 @@
-import sys
-import pandas as pd
 import re
+import sys
 
 REQUIRED_PYTHON = "python3"
 
@@ -12,13 +11,16 @@ def main():
     elif REQUIRED_PYTHON == "python3":
         required_major = 3
     else:
-        raise ValueError("Unrecognized python interpreter: {}".format(
-            REQUIRED_PYTHON))
+        raise ValueError(
+            "Unrecognized python interpreter: {}".format(REQUIRED_PYTHON)
+        )
 
     if system_major != required_major:
         raise TypeError(
             "This project requires Python {}. Found: Python {}".format(
-                required_major, sys.version))
+                required_major, sys.version
+            )
+        )
     else:
         print(">>> Development environment passes all tests!")
 
@@ -32,6 +34,7 @@ def main():
 #         assert len(test_df) == 3263
 #     except AssertionError:
 #         print('Full data not loaded')
+
 
 def test_sub():
 
@@ -48,16 +51,15 @@ def test_sub():
     test_str = re.sub(r"You're", "You are", test_str)
 
     try:
-        assert test_str == "are not is not What is have not has not There is He is It is You are"
+        assert (
+            test_str == "are not is not What is have"
+            "not has not There is He is It is You are"
+        )
     except AssertionError:
-        print('Substitution test not correct.')
+        print("Substitution test not correct.")
 
 
-
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-#    test_data()
+    #    test_data()
     test_sub()

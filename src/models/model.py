@@ -1,13 +1,10 @@
-from transformers import ConvBertForSequenceClassification, AdamW
-import torch
-import torch.nn as nn
-from torch.optim import Adam
-import pytorch_lightning as pl
-import argparse
-from src.utils import all_logging_disabled
 import logging
-import functools
+
+import pytorch_lightning as pl
 import torchmetrics
+from transformers import AdamW, ConvBertForSequenceClassification
+
+from src.utils import all_logging_disabled
 
 
 class ConvBert(pl.LightningModule):
@@ -42,7 +39,9 @@ class ConvBert(pl.LightningModule):
             layer_slice = slice(None, -fine_tune_layers)
 
         params_to_freeze = (
-            self.model._modules["convbert"].encoder.layer[layer_slice].parameters()
+            self.model._modules["convbert"]
+            .encoder.layer[layer_slice]
+            .parameters()
         )
         for param in params_to_freeze:
             param.requires_grad = False

@@ -1,5 +1,4 @@
 import pytest
-import torch
 
 from src.data.datamodule import DisasterDataModule
 
@@ -11,13 +10,19 @@ def data_module():
 
     return data_module
 
+
 @pytest.fixture()
-def datasets(data_module : DisasterDataModule):
+def datasets(data_module: DisasterDataModule):
 
     data_module.prepare_data()
     data_module.setup()
-    
-    return data_module.train_dataset, data_module.val_dataset, data_module.test_dataset 
+
+    return (
+        data_module.train_dataset,
+        data_module.val_dataset,
+        data_module.test_dataset,
+    )
+
 
 def test_lengths(datasets):
 

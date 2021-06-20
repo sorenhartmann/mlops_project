@@ -123,13 +123,10 @@ class DisasterDataModule(LightningDataModule):
             for col in ["keyword", "location"]:
                 df[col] = df[col].fillna(f"no_{col}")
 
-        # Clean text using data_cleaning.py
-        from src.data.substitutions import substitutions
+        from src.data.substitutions import apply_substitutions
 
-        for a, b in substitutions:
-            use_regex = True if type(a) is re.Pattern else False
-            train["text"] = train["text"].str.replace(a, b, regex=use_regex)
-            test["text"] = test["text"].str.replace(a, b, regex=use_regex)
+        train["text"] = apply_substitutions(train["text"])
+        test["text"] = apply_substitutions(test["text"])
 
         # Create data/preprocessed folder if it does not exists
         self.interim_folder.mkdir(exist_ok=True)

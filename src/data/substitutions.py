@@ -722,3 +722,11 @@ substitutions = [
     (r"...", " ... "),
     (re.compile(r"([^.])(\.\.)([^.])"), r"\g<1> ... \g<3>"),
 ]
+
+def apply_substitutions(series):
+
+    for a, b in substitutions:
+        use_regex = True if type(a) is re.Pattern else False
+        series = series.str.replace(a, b, regex=use_regex)
+        
+    return series

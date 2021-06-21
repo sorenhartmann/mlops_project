@@ -70,7 +70,7 @@ def build_app(model_name=None):
         input_ids, attention_mask, token_type_ids = tokenizer.tokenize(
             [input_tweet]
         )
-        app.logger.info(f"Forward pass...")
+        app.logger.info("Forward pass...")
         output = model(
             input_ids=input_ids,
             attention_mask=attention_mask,

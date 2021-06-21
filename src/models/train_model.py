@@ -10,11 +10,10 @@ from src.models.model import ConvBert
 
 def main(args):
 
-    wandb_logger = WandbLogger(project="mlops_project", entity="mlops_project")
-
     dm = DisasterDataModule("./data", batch_size=16)
-
     model = ConvBert(**vars(args))
+
+    wandb_logger = WandbLogger(project="mlops_project", entity="mlops_project")
 
     if args.Aprofiler:
         # profiler =

@@ -13,22 +13,28 @@ class ConvBert(pl.LightningModule):
         parser = parent_parser.add_argument_group("ConvBert")
         parser.add_argument("--lr", default=0.001)
         parser.add_argument("--fine_tune_layers", default=1, type=int)
+        parser.add_argument("--last_layer_dropout", default=0.1, type=float)
         return parent_parser
 
-    def __init__(self, lr, fine_tune_layers, **kwargs):
+    def __init__(self, lr, fine_tune_layers, last_layer_dropout, **kwargs):
 
         super().__init__()
 
-        self.save_hyperparameters("lr", "fine_tune_layers")
+        self.save_hyperparameters(
+            "lr", "fine_tune_layers", "last_layer_dropout"
+        )
 
         self.lr = lr
         self.fine_tune_layers = fine_tune_layers
+        self.last_layer_dropout = last_layer_dropout
 
         with all_logging_disabled(logging.ERROR):
             model = ConvBertForSequenceClassification.from_pretrained(
                 "YituTech/conv-bert-base"
             )
         self.model = model
+
+        self.model._modules["classifier"].dropout.p = last_layer_dropout
 
         for param in self.model._modules["convbert"].embeddings.parameters():
             param.requires_grad = False
@@ -97,3 +103,8 @@ class ConvBert(pl.LightningModule):
         optimizer = AdamW(self.model.parameters(), lr=self.lr)
 
         return optimizer
+
+
+if __name__ == "__main__":
+
+    model = ConvBert(0.001, 5, 0.5)

@@ -1,10 +1,10 @@
-
 from typing import List
-from transformers import ConvBertTokenizer
+
 import torch
+from transformers import ConvBertTokenizer
+
 
 class Tokenizer:
-
     def __init__(self):
 
         self.tokenizer = ConvBertTokenizer.from_pretrained(
@@ -13,7 +13,7 @@ class Tokenizer:
 
     def tokenize(self, strings: List[str]):
 
-        tokenized_output = self.tokenizer(strings)        
+        tokenized_output = self.tokenizer(strings)
 
         input_ids = torch.tensor(tokenized_output.input_ids)
         attention_mask = torch.tensor(tokenized_output.attention_mask)

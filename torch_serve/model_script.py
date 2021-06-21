@@ -1,8 +1,10 @@
 import argparse
 import os
 import sys
-import wandb
 from pathlib import Path
+
+import wandb
+
 from src.models.model import ConvBert
 
 if __name__ == "__main__":
@@ -18,7 +20,6 @@ if __name__ == "__main__":
     wandb_entity = "mlops_project"
     wandb_project = "mlops_project"
 
-
     # Get runs from wandb
     wandb_api = wandb.Api()
     runs = wandb_api.runs(f"{wandb_entity}/{wandb_project}")
@@ -28,10 +29,11 @@ if __name__ == "__main__":
         run = next(run for run in runs if run.state == "finished")
     else:
         run = next(run for run in runs if run.name == args.model_name)
-    
 
     # Find checkpoint file, possibly downloading into ./models/
-    checkpoint_file = next(file for file in run.files() if file.name.endswith(".ckpt"))
+    checkpoint_file = next(
+        file for file in run.files() if file.name.endswith(".ckpt")
+    )
 
     try:
         local_path = next(

@@ -108,4 +108,3 @@ class ConvBert(pl.LightningModule):
 if __name__ == "__main__":
 
     model = ConvBert(0.001, 5, 0.5)
-    

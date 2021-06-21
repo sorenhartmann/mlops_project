@@ -1,11 +1,12 @@
-from flask import Flask
-from flask_caching import Cache
-from flask.json import jsonify
+from pathlib import Path
 
 import wandb
-from src.models.model import ConvBert
+from flask import Flask
+from flask.json import jsonify
+from flask_caching import Cache
+
 from src.data.preprocessing import Tokenizer
-from pathlib import Path
+from src.models.model import ConvBert
 
 
 def build_app(model_name=None):

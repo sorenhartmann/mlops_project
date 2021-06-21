@@ -1,0 +1,9 @@
+# log frequency
+val_check_interval: 1.0
+progress_bar_refresh_rate: 20
+
+wandb:
+  project: mlops_project
+  entity: mlops_project
+  log_model: True
+  mode: "online"

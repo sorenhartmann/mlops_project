@@ -1,0 +1,4 @@
+_target_: src.models.model.ConvBert
+lr: 0.001
+fine_tune_layers: 0
+last_layer_dropout: 0.1

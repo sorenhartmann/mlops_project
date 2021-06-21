@@ -29,7 +29,11 @@ class Objective:
 
         wandb_logger.log_hyperparams({"batch_size": batch_size})
         dm = DisasterDataModule(batch_size=batch_size, data_dir="./data")
-        model = ConvBert(lr=lr, fine_tune_layers=fine_tune_layers)
+        model = ConvBert(
+            lr=lr,
+            fine_tune_layers=fine_tune_layers,
+            final_layer_dropout=final_layer_dropout,
+        )
 
         early_stopping = pl.callbacks.EarlyStopping("val_loss")
 

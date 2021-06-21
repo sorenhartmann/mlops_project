@@ -1,7 +1,8 @@
+import logging
 from pathlib import Path
 
 import wandb
-from flask import Flask
+from flask import Flask, request
 from flask.json import jsonify
 from flask_caching import Cache
 
@@ -54,8 +55,10 @@ def build_app(model_name=None):
 
         return model
 
-    @app.route("/predict/<string:input_tweet>")
-    def hello_word(input_tweet):
+    @app.route("/predict", methods=["GET"])
+    def hello_word():
+
+        input_tweet = request.args.get("string")
 
         app.logger.info(f"Received string: '{input_tweet}'")
 
@@ -85,5 +88,7 @@ def build_app(model_name=None):
             p_real_disaster=probs[0].item(),
             p_not_real_disaster=probs[1].item(),
         )
+
+    app.logger.setLevel(logging.INFO)
 
     return app

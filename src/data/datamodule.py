@@ -122,10 +122,10 @@ class DisasterDataModule(LightningDataModule):
             for col in ["keyword", "location"]:
                 df[col] = df[col].fillna(f"no_{col}")
 
-        from src.data.substitutions import apply_substitutions
+        # from src.data.substitutions import apply_substitutions
 
-        train["text"] = apply_substitutions(train["text"])
-        test["text"] = apply_substitutions(test["text"])
+        # train["text"] = apply_substitutions(train["text"])
+        # test["text"] = apply_substitutions(test["text"])
 
         # Create data/preprocessed folder if it does not exists
         self.interim_folder.mkdir(exist_ok=True)

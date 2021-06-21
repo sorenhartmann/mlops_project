@@ -17,7 +17,6 @@ class Objective:
         wandb_logger = pl.loggers.WandbLogger(
             project="mlops_project",
             entity="mlops_project",
-            tags=["hparam-search"],
             group="hparam-search",
         )
 

@@ -38,6 +38,9 @@ def build_app(model_name=None):
         checkpoint_file = next(
             file for file in run.files() if file.name.endswith(".ckpt")
         )
+        app.logger.info(
+            f"Found model with checkpoint path: '{checkpoint_file.name}'"
+        )
 
         try:
             local_path = next(
@@ -45,10 +48,15 @@ def build_app(model_name=None):
                     f"*-{run.id}/files/{checkpoint_file.name}"
                 )
             )
+            app.logger.info("Found model checkpoint in local wandb storage")
         except StopIteration:
             local_path = Path("models") / checkpoint_file.name
             if not local_path.exists():
+                app.logger.info("Downloading model checkpoint to ./models/")
                 checkpoint_file.download("models").close()
+                app.logger.info("Download finished!")
+            else:
+                app.logger.info("Found model checkpoint in ./models/")
 
         model = ConvBert.load_from_checkpoint(local_path)
         model.eval()
@@ -64,8 +72,10 @@ def build_app(model_name=None):
 
         app.logger.info("Loading tokenizer")
         tokenizer = load_tokenizer()
+        app.logger.info("Loaded tokenizer!")
         app.logger.info("Loading model")
         model = load_model(model_name)
+        app.logger.info("Loaded model!")
 
         input_ids, attention_mask, token_type_ids = tokenizer.tokenize(
             [input_tweet]

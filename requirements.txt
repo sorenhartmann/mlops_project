@@ -16,6 +16,7 @@ matplotlib
 optuna
 Flask
 Flask-Caching
+hydra-core
 
 # local package
 -e .

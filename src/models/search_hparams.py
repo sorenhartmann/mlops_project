@@ -23,8 +23,8 @@ class Objective:
         lr = trial.suggest_float("lr", 5e-6, 1e-3, log=True)
         batch_size = trial.suggest_categorical("batch_size", [12, 16, 32])
         fine_tune_layers = trial.suggest_int("fine_tune_layers", 0, 12)
-        final_layer_dropout = trial.suggest_float(
-            "final_layer_dropout", 0.1, 0.5
+        last_layer_dropout = trial.suggest_float(
+            "last_layer_dropout", 0.1, 0.5
         )
 
         wandb_logger.log_hyperparams({"batch_size": batch_size})
@@ -32,7 +32,7 @@ class Objective:
         model = ConvBert(
             lr=lr,
             fine_tune_layers=fine_tune_layers,
-            final_layer_dropout=final_layer_dropout,
+            last_layer_dropout=last_layer_dropout,
         )
 
         early_stopping = pl.callbacks.EarlyStopping("val_loss")

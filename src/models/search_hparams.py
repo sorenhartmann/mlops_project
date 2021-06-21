@@ -49,4 +49,4 @@ if __name__ == "__main__":
     storage_name = "sqlite:///optuna-storage.db"
 
     study = optuna.create_study(study_name="hparam-search", direction="maximize", storage=storage_name, load_if_exists=True)
-    study.optimize(objective, timeout=1800)
+    study.optimize(objective)

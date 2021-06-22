@@ -92,6 +92,7 @@ class ConvBert(pl.LightningModule):
         )
 
         predictions = output.logits.argmax(-1)
+
         self.log(
             "val_accuracy",
             self.accuracy(predictions, batch["labels"].squeeze()),

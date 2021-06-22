@@ -1,6 +1,8 @@
 import logging
 
+import pandas as pd
 import pytorch_lightning as pl
+import torch
 import torchmetrics
 from transformers import AdamW, ConvBertForSequenceClassification
 
@@ -99,6 +101,53 @@ class ConvBert(pl.LightningModule):
             prog_bar=True,
         )
         self.log("val_loss", output.loss)
+
+    def test_step(self, batch, batch_dix):
+
+        batch = {
+            "input_ids": batch[0],
+            "token_type_ids": batch[1],
+            "attention_mask": batch[2],
+        }
+
+        output = self(
+            input_ids=batch["input_ids"],
+            token_type_ids=batch["token_type_ids"],
+            attention_mask=batch["attention_mask"],
+        )
+
+        probs = output.logits.softmax(-1)
+
+        return probs
+
+    def test_epoch_end(self, test_step_outputs):
+
+        probs = torch.cat(test_step_outputs)
+
+        test_data_raw = pd.read_csv("./data/raw/test.csv")
+
+        test_submission = pd.DataFrame(
+            {"id": test_data_raw["id"], "target": probs.argmax(-1)}
+        )
+
+        test_submission.to_csv("results/kaggle_submission.csv", index=False)
+
+        # wandb.init(
+        #     project="mlops_project",
+        #     entity="mlops_project",
+        #     group="test-samples",
+        # )
+
+        # test_samples = pd.DataFrame({
+        #     "id": test_data_raw["id"][:32],
+        #     "tweet" :  test_data_raw["text"][:32],
+        #     "p_real_disaster": probs[:32, 1],
+        #     "p_not_real_disaster": probs[:32, 0]
+        #     })
+
+        # wandb.log({"test_samples" : wandb.Table(dataframe = test_samples)})
+
+        # wandb.finish()
 
     def configure_optimizers(self):
         optimizer = AdamW(self.model.parameters(), lr=self.lr)

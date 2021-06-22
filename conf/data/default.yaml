@@ -1,0 +1,13 @@
+datamodule:
+  _target_: src.data.datamodule.DisasterDataModule
+  data_dir: "./data"
+  num_workers:
+    train: 2
+    val: 2
+    test: 2
+
+  batch_size:
+    16
+    # train: 16
+    # val: 16
+    # test: 16

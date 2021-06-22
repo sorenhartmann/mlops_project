@@ -90,13 +90,13 @@ def build_app(model_name=None):
         probs = output.logits.softmax(-1).squeeze()
 
         app.logger.info(
-            f"P( Real disaster ) = {probs[0]:.2f}% / "
-            f"P( not real disaster ) = {probs[1]:.2f}%"
+            f"P( Real disaster ) = {probs[1]:.2f}% / "
+            f"P( not real disaster ) = {probs[0]:.2f}%"
         )
 
         return jsonify(
-            p_real_disaster=probs[0].item(),
-            p_not_real_disaster=probs[1].item(),
+            p_real_disaster=probs[1].item(),
+            p_not_real_disaster=probs[0].item(),
         )
 
     app.logger.setLevel(logging.INFO)

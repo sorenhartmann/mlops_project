@@ -1,11 +1,8 @@
 import os
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import dotenv
-import numpy as np
-import pytorch_lightning as pl
-import torch
 import pytorch_lightning as pl
 from omegaconf import DictConfig, OmegaConf
 
@@ -15,7 +12,8 @@ def get_env(env_name: str, default: Optional[str] = None) -> str:
     if env_name not in os.environ:
         if default is None:
             raise KeyError(
-                f"{env_name} not defined and no default value is present!")
+                f"{env_name} not defined and no default value is present!"
+            )
         return default
 
     env_value: str = os.environ[env_name]
@@ -46,13 +44,15 @@ def log_hyperparameters(
     hparams = OmegaConf.to_container(cfg, resolve=True)
 
     # save number of model parameters
-    hparams[f"{STATS_KEY}/params_total"] = sum(p.numel()
-                                               for p in model.parameters())
-    hparams[f"{STATS_KEY}/params_trainable"] = sum(p.numel()
-                                                   for p in model.parameters()
-                                                   if p.requires_grad)
+    hparams[f"{STATS_KEY}/params_total"] = sum(
+        p.numel() for p in model.parameters()
+    )
+    hparams[f"{STATS_KEY}/params_trainable"] = sum(
+        p.numel() for p in model.parameters() if p.requires_grad
+    )
     hparams[f"{STATS_KEY}/params_not_trainable"] = sum(
-        p.numel() for p in model.parameters() if not p.requires_grad)
+        p.numel() for p in model.parameters() if not p.requires_grad
+    )
 
     # send hparams to all loggers
     trainer.logger.log_hyperparams(hparams)
@@ -67,7 +67,8 @@ load_envs()
 
 # Set the cwd to the project root
 PROJECT_ROOT: Path = Path(get_env("PROJECT_ROOT"))
-assert (PROJECT_ROOT.exists(
-)), "You must configure the PROJECT_ROOT environment variable in a .env file!"
+assert (
+    PROJECT_ROOT.exists()
+), "You must configure the PROJECT_ROOT environment variable in a .env file!"
 
 os.chdir(PROJECT_ROOT)

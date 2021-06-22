@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import List
 
@@ -7,7 +6,7 @@ import omegaconf
 import pytorch_lightning as pl
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
-from pytorch_lightning import seed_everything, Callback
+from pytorch_lightning import Callback, seed_everything
 from pytorch_lightning.callbacks import (
     EarlyStopping,
     LearningRateMonitor,
@@ -15,7 +14,7 @@ from pytorch_lightning.callbacks import (
 )
 from pytorch_lightning.loggers import WandbLogger
 
-from src.common.utils import log_hyperparameters, PROJECT_ROOT
+from src.common.utils import PROJECT_ROOT, log_hyperparameters
 
 
 def build_callbacks(cfg: DictConfig) -> List[Callback]:
@@ -27,7 +26,8 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
             LearningRateMonitor(
                 logging_interval=cfg.logging.lr_monitor.logging_interval,
                 log_momentum=cfg.logging.lr_monitor.log_momentum,
-            ))
+            )
+        )
 
     if "early_stopping" in cfg.train:
         hydra.utils.log.info(f"Adding callback <EarlyStopping>")
@@ -37,7 +37,8 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
                 mode=cfg.train.monitor_metric_mode,
                 patience=cfg.train.early_stopping.patience,
                 verbose=cfg.train.early_stopping.verbose,
-            ))
+            )
+        )
 
     if "model_checkpoints" in cfg.train:
         hydra.utils.log.info(f"Adding callback <ModelCheckpoint>")
@@ -47,7 +48,8 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
                 mode=cfg.train.monitor_metric_mode,
                 save_top_k=cfg.train.model_checkpoints.save_top_k,
                 verbose=cfg.train.model_checkpoints.verbose,
-            ))
+            )
+        )
 
     return callbacks
 
@@ -63,7 +65,8 @@ def run(cfg: DictConfig) -> None:
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
             f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
-            f"Forcing debugger friendly configuration!")
+            f"Forcing debugger friendly configuration!"
+        )
         # Debuggers don't like GPUs nor multiprocessing
         cfg.train.pl_trainer.gpus = 0
         cfg.data.datamodule.num_workers.train = 0
@@ -79,7 +82,8 @@ def run(cfg: DictConfig) -> None:
     # Instantiate datamodule
     hydra.utils.log.info(f"Instantiating <{cfg.data.datamodule._target_}>")
     datamodule: pl.LightningDataModule = hydra.utils.instantiate(
-        cfg.data.datamodule, _recursive_=False)
+        cfg.data.datamodule, _recursive_=False
+    )
 
     # Instantiate model
     hydra.utils.log.info(f"Instantiating <{cfg.model._target_}>")

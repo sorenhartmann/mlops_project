@@ -20,7 +20,8 @@ def get_env(env_name: str, default: Optional[str] = None) -> str:
     if not env_value:
         if default is None:
             raise ValueError(
-                f"{env_name} has yet to be configured and no default value is present!"
+                f"{env_name} has yet to be configured"
+                "and no default value is present!"
             )
         return default
 
@@ -58,7 +59,8 @@ def log_hyperparameters(
     trainer.logger.log_hyperparams(hparams)
 
     # disable logging any more hyperparameters for all loggers
-    # (this is just a trick to prevent trainer from logging hparams of model, since we already did that above)
+    # (this is just a trick to prevent trainer from logging
+    # hparams of model, since we already did that above)
     trainer.logger.log_hyperparams = lambda params: None
 
 

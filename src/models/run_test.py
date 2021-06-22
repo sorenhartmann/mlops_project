@@ -21,7 +21,7 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
     callbacks: List[Callback] = []
 
     if "lr_monitor" in cfg.logging:
-        hydra.utils.log.info(f"Adding callback <LearningRateMonitor>")
+        hydra.utils.log.info("Adding callback <LearningRateMonitor>")
         callbacks.append(
             LearningRateMonitor(
                 logging_interval=cfg.logging.lr_monitor.logging_interval,
@@ -30,7 +30,7 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
         )
 
     if "early_stopping" in cfg.train:
-        hydra.utils.log.info(f"Adding callback <EarlyStopping>")
+        hydra.utils.log.info("Adding callback <EarlyStopping>")
         callbacks.append(
             EarlyStopping(
                 monitor=cfg.train.monitor_metric,
@@ -41,7 +41,7 @@ def build_callbacks(cfg: DictConfig) -> List[Callback]:
         )
 
     if "model_checkpoints" in cfg.train:
-        hydra.utils.log.info(f"Adding callback <ModelCheckpoint>")
+        hydra.utils.log.info("Adding callback <ModelCheckpoint>")
         callbacks.append(
             ModelCheckpoint(
                 monitor=cfg.train.monitor_metric,
@@ -65,7 +65,7 @@ def run(cfg: DictConfig) -> None:
     if cfg.train.pl_trainer.fast_dev_run:
         hydra.utils.log.info(
             f"Debug mode <{cfg.train.pl_trainer.fast_dev_run=}>. "
-            f"Forcing debugger friendly configuration!"
+            "Forcing debugger friendly configuration!"
         )
         # Debuggers don't like GPUs nor multiprocessing
         cfg.train.pl_trainer.gpus = 0
@@ -101,7 +101,7 @@ def run(cfg: DictConfig) -> None:
     # Logger instantiation/configuration
     wandb_logger = None
     if "wandb" in cfg.logging:
-        hydra.utils.log.info(f"Instantiating <WandbLogger>")
+        hydra.utils.log.info("Instantiating <WandbLogger>")
         wandb_config = cfg.logging.wandb
         wandb_logger = WandbLogger(
             **wandb_config,
@@ -119,7 +119,7 @@ def run(cfg: DictConfig) -> None:
     yaml_conf: str = OmegaConf.to_yaml(cfg=cfg)
     (Path(wandb_logger.experiment.dir) / "hparams.yaml").write_text(yaml_conf)
 
-    hydra.utils.log.info(f"Instantiating the Trainer")
+    hydra.utils.log.info("Instantiating the Trainer")
 
     # The Lightning core, the Trainer
     trainer = pl.Trainer(
@@ -133,10 +133,10 @@ def run(cfg: DictConfig) -> None:
     )
     log_hyperparameters(trainer=trainer, model=model, cfg=cfg)
 
-    hydra.utils.log.info(f"Starting training!")
+    hydra.utils.log.info("Starting training!")
     trainer.fit(model=model, datamodule=datamodule)
 
-    hydra.utils.log.info(f"Starting testing!")
+    hydra.utils.log.info("Starting testing!")
     trainer.test(datamodule=datamodule)
 
     # Logger closing to release resources/avoid multi-run conflicts

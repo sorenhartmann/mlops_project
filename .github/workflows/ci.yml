@@ -28,11 +28,11 @@ jobs:
 
     - name: Runs flake8
       run: |
-        flake8 src tests torch_serve
+        flake8 src tests
         
     - name: Runs isort
       run: |
-        isort -p=src -c src tests torch_serve 
+        isort -p=src -c src tests 
 
     - name: Test with pytest
       run: |
